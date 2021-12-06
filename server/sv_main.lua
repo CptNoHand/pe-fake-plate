@@ -4,15 +4,6 @@ local fakePlate         = fakePlate
 local applyingPlate     = applyingPlate
 local fakePlateActive   = nil
 local maxDistance       = 4
-ESX                     = nil
-
-if Config.useMysqlAsync then
-    fetchScalar         = exports.oxmysql:fetchScalar
-end
-
-if Config.useGhmattimysql then
-    fetchScalar         = exports.ghmattimysql.scalar 
-end
 
 if Config.Standalone then
     RegisterCommand('fakePlate', function(source, args) 
@@ -32,7 +23,7 @@ RegisterNetEvent('pe-fake-plate:startFakePlate', function(source)
     local plate         = GetVehicleNumberPlateText(netVehicle)
     if Config.ownerRestricted then
         if identifier then
-            fetchScalar('SELECT 1 FROM '..Config.databaseName..' WHERE (owner, plate) = (@owner, @plate)', {
+            exports.oxmysql:fetchScalar('SELECT 1 FROM player_vehicles WHERE (owner, plate) = (@owner, @plate)', {
                 ['owner']          = identifier,
                 ['plate']          = plate,
             }, function(results)
