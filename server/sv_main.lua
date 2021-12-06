@@ -7,24 +7,11 @@ local maxDistance       = 4
 ESX                     = nil
 
 if Config.useMysqlAsync then
-    fetchScalar         = MySQL.Async.fetchScalar
+    fetchScalar         = exports.oxmysql:fetchScalar
 end
 
 if Config.useGhmattimysql then
     fetchScalar         = exports.ghmattimysql.scalar 
-end
-
-if Config.useESX then
-    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-
-    ESX.RegisterUsableItem('plate', function(source)
-        -- If any issues, make xPlayer a local variable.
-        TriggerEvent('pe-fake-plate:startReturnPlate', source)
-    end)
-    ESX.RegisterUsableItem('fakeplate', function(source)
-        -- If any issues, make xPlayer a local variable.
-        TriggerEvent('pe-fake-plate:startFakePlate', source)
-    end)
 end
 
 if Config.Standalone then
